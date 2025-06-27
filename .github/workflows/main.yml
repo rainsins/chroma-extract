@@ -12,23 +12,83 @@ jobs:
     strategy:
       matrix:
         platform:
-          - name: Windows x64
-            os: windows-latest
-            target: x86_64-pc-windows-msvc
-            binary_name: dash.exe
-            asset_name: dash-windows-x64
-
-          - name: macOS x64
-            os: macos-latest
-            target: x86_64-apple-darwin
-            binary_name: dash
-            asset_name: dash-macos-x64
-
-          - name: Linux x64
-            os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            binary_name: dash
-            asset_name: dash-linux-x64
+        # ===================================================================
+        # 1. 主流桌面平台 (Intel/AMD 64-bit)
+        # ===================================================================
+        - name: Windows x64 (MSVC)
+          os: windows-latest
+          target: x86_64-pc-windows-msvc
+          binary_name: setup.exe
+          asset_name: setup-x86_64-windows-msvc.exe
+        - name: macOS x64 (Intel)
+          os: macos-latest
+          target: x86_64-apple-darwin
+          binary_name: setup
+          asset_name: setup-x86_64-apple-darwin
+        - name: Linux x64 (GNU)
+          os: ubuntu-latest
+          target: x86_64-unknown-linux-gnu
+          binary_name: setup
+          asset_name: setup-x86_64-linux-gnu
+        - name: Linux x64 (musl)
+          os: ubuntu-latest
+          target: x86_64-unknown-linux-musl
+          binary_name: setup
+          asset_name: setup-x86_64-linux-musl # 适合静态链接和容器环境
+        # ===================================================================
+        # 2. 主流ARM平台 (ARM64 / AArch64)
+        # ===================================================================
+        - name: Windows ARM64 (MSVC)
+          os: windows-latest
+          target: aarch64-pc-windows-msvc
+          binary_name: setup.exe
+          asset_name: setup-aarch64-windows-msvc.exe # 适用于Windows on ARM设备
+        - name: macOS ARM64 (Apple Silicon)
+          os: macos-14 # 明确指定支持ARM64的runner
+          target: aarch64-apple-darwin
+          binary_name: setup
+          asset_name: setup-aarch64-apple-darwin # 适用于 M1/M2/M3 等芯片
+        - name: Linux ARM64 (GNU)
+          os: ubuntu-latest
+          target: aarch64-unknown-linux-gnu
+          binary_name: setup
+          asset_name: setup-aarch64-linux-gnu # 适用于AWS Graviton, 树莓派4/5等
+        - name: Linux ARM64 (musl)
+          os: ubuntu-latest
+          target: aarch64-unknown-linux-musl
+          binary_name: setup
+          asset_name: setup-aarch64-linux-musl # ARM64静态链接版本
+        # ===================================================================
+        # 3. 32位架构 (Legacy & Embedded)
+        # ===================================================================
+        - name: Windows x86 (MSVC)
+          os: windows-latest
+          target: i686-pc-windows-msvc
+          binary_name: setup.exe
+          asset_name: setup-i686-windows-msvc.exe
+        - name: Linux x86 (GNU)
+          os: ubuntu-latest
+          target: i686-unknown-linux-gnu
+          binary_name: setup
+          asset_name: setup-i686-linux-gnu
+        - name: Linux ARMv7 (GNU)
+          os: ubuntu-latest
+          target: armv7-unknown-linux-gnueabihf
+          binary_name: setup
+          asset_name: setup-armv7-linux-gnueabihf # 适用于树莓派2/3等老款ARM设备
+        # ===================================================================
+        # 4. Windows GNU 工具链 (MinGW)
+        # ===================================================================
+        - name: Windows x64 (GNU)
+          os: windows-latest
+          target: x86_64-pc-windows-gnu
+          binary_name: setup.exe
+          asset_name: setup-x86_64-windows-gnu.exe
+        - name: Windows x86 (GNU)
+          os: windows-latest
+          target: i686-pc-windows-gnu
+          binary_name: setup.exe
+          asset_name: setup-i686-windows-gnu.exe
 
     steps:
       - uses: actions/checkout@v3
