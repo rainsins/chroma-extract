@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# 这个项目主要使用标准库，不需要额外的依赖
 
 [[bin]]
 name = "setup"
