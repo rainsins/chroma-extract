@@ -94,4 +94,4 @@ match DominantColors::new(img).extract(Algorithm::Octree) {
 
 ## 许可证
 
-MIT 或 Apache-2.0，任选其一。
+MIT许可。
