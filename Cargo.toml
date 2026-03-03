@@ -1,10 +1,55 @@
 [package]
-name = "server-setup-tool"
+name = "dominant-colors"
 version = "0.1.0"
 edition = "2021"
+authors = ["Your Name <you@example.com>"]
+description = "从图片中提取主色调：K-Means、中位切分、八叉树三种算法"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/your/dominant-colors"
+keywords = ["color", "image", "kmeans", "palette", "wasm"]
+categories = ["multimedia::images", "algorithms", "wasm"]
+readme = "README.md"
 
+# ── 普通依赖（native + wasm 共用）─────────────────────────────────────────────
 [dependencies]
+thiserror = "1.0"
+rand = { version = "0.8", features = ["small_rng"] }
 
-[[bin]]
-name = "setup"
-path = "src/main.rs"
+# image crate：native 启用文件 I/O，wasm 只保留像素解码能力
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+
+# wasm-bindgen：仅在 wasm 目标下编译
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+console_error_panic_hook = { version = "0.1", optional = true }
+web-sys = { version = "0.3", features = ["console"], optional = true }
+
+# ── 开发依赖 ──────────────────────────────────────────────────────────────────
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "bench_algorithms"
+harness = false
+
+# ── Feature 开关 ──────────────────────────────────────────────────────────────
+[features]
+default = []
+
+# 开启 rayon 并行加速（仅 native，wasm 不支持多线程标准实现）
+parallel = ["dep:rayon"]
+
+# 开启 WASM 调试辅助（panic 信息转发到浏览器控制台）
+wasm-debug = ["dep:console_error_panic_hook", "dep:web-sys"]
+
+[dependencies.rayon]
+version = "1.10"
+optional = true
+
+# ── WASM 包配置（供 wasm-pack 使用）──────────────────────────────────────────
+[lib]
+# cdylib：生成供 JS 调用的动态库；rlib：保留 Rust 内部使用能力
+crate-type = ["cdylib", "rlib"]
