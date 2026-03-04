@@ -2,10 +2,10 @@
 name = "dominant-colors"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name <you@example.com>"]
+authors = ["rainsin <mail@rainsin.cn>"]
 description = "从图片中提取主色调：K-Means、中位切分、八叉树三种算法"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/your/dominant-colors"
+repository = "https://github.com/rainsins/chroma-extract"
 keywords = ["color", "image", "kmeans", "palette", "wasm"]
 categories = ["multimedia::images", "algorithms", "wasm"]
 readme = "README.md"
