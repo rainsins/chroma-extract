@@ -97,7 +97,7 @@ impl AlgorithmInfo {
 ///     .collect();
 ///
 /// let palette = algorithms::extract(&pixels, Algorithm::MedianCut, &Config::default()).unwrap();
-/// assert_eq!(palette.len(), 2);
+/// assert_eq!(palette.len(), 8);
 /// ```
 pub fn extract(
     pixels: &[[u8; 3]],

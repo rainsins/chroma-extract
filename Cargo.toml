@@ -1,6 +1,6 @@
 [package]
 name = "dominant-colors"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["rainsin <mail@rainsin.cn>"]
 description = "从图片中提取主色调：K-Means、中位切分、八叉树三种算法"
